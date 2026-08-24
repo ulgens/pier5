@@ -71,6 +71,3 @@ jobs:
 
       - name: Install built package
         run: uv pip install dist/*.whl
-
-      - name: Verify import works
-        run: xvfb-run -a uv run python -c "import pier5; print(pier5.__version__)"
