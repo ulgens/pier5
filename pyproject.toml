@@ -15,11 +15,16 @@ requires-python = ">=3.12,<3.16"
 classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
+    # TODO:
+    #   py5 doesn't declare support for 3.12+ yet, but I haven't encounter a blocker / breaking issue yet.
+    #   https://github.com/py5coding/py5generator/issues/794
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.15",
 ]
-dependencies = []
+dependencies = [
+    "py5>=0.10.11a0,<0.11",
+]
 
 [project.urls]
 Homepage = "https://github.com/ulgens/pier5"
