@@ -1,4 +1,11 @@
+from importlib.util import find_spec
+
 from pytest import fail
+
+
+def test_sketch() -> None:
+    if not find_spec("pier5.sketch"):
+        fail("Can't import `Sketch` from the package")
 
 
 def test_version() -> None:
