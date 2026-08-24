@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 266d887
+_src_path: gh:ulgens/python-anything
+author_email: foss@ulgenwanders.net
+author_name: Ülgen Sarıkavak
+github_username: ulgens
+license: MIT
+max_python_version: "3.16"
+min_python_version: "3.12"
+project_description: More Pythonic take on Processing Python interface
+project_name: pier5
+project_type: Library
+use_codecov: false
+use_ty: true

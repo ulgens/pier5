@@ -1,0 +1,65 @@
+# Adapted from https://docs.astral.sh/uv/guides/integration/github/#using-uv-in-github-actions
+
+name: "Tests"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request: ~
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  # renovate: datasource=pypi depName=uv
+  UV_VERSION: 0.12.5
+
+jobs:
+  run-tests:
+    name: pytest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.15"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv ${{ env.UV_VERSION }} & Python ${{ matrix.python-version }}
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d  # v10.0.1
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+          version: ${{ env.UV_VERSION }}
+
+      - name: Install Python dependencies
+        run: uv sync
+
+      - name: Run tests
+        working-directory: ./src
+        run: |
+          uv run pytest
+
+      - name: Build package
+        run: uv build
+
+      - name: Install built package
+        run: uv pip install dist/*.whl
+
+      - name: Verify import works
+        run: uv run python -c "import pier5; print(pier5.__version__)"

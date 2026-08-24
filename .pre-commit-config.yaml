@@ -1,0 +1,62 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: v2.28.0
+    hooks:
+      - id: pyproject-fmt
+
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: v0.0.73
+    hooks:
+      - id: ty
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.4
+    hooks:
+      - id: ruff-check
+        args: ["--fix", "--show-fixes"]
+      - id: ruff-format
+
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.21.0
+    hooks:
+      - id: yamlfmt
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.38.0
+    hooks:
+      # TODO:
+      #   Consider migrating to actionlint
+      #   https://github.com/python-jsonschema/check-jsonschema/issues/586
+      #   https://github.com/rhysd/actionlint
+      - id: check-github-workflows
+      - id: check-github-workflows-require-timeout
+        # https://github.com/python-jsonschema/check-jsonschema/pull/643#issuecomment-3903138224
+        # https://github.com/python-jsonschema/check-jsonschema/issues/586
+      - id: check-renovate
+        files: ^renovate.json5$
+        language: python
+        additional_dependencies:
+          - pyjson5==2.0.1
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.29.0
+    hooks:
+      - id: zizmor
+        args: ["--no-progress", "--persona=auditor"]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
