@@ -24,6 +24,7 @@ classifiers = [
 ]
 dependencies = [
     "py5>=0.10.11a0,<0.11",
+    "type-enforced>=2.8.0",
 ]
 
 [project.urls]
