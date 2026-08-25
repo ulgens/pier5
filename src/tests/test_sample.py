@@ -5,7 +5,7 @@ from pytest import fail
 
 def test_sketch() -> None:
     if not find_spec("pier5.sketch"):
-        fail("Can't import `Sketch` from the package")
+        fail("Can't import `BaseSketch` from the package")
 
 
 def test_version() -> None:
@@ -24,3 +24,14 @@ def inc(x):
 
 def test_answer():
     assert inc(3) == 4
+
+
+def test_sketch_mro_excludes_math_mixin() -> None:
+    from pier5.sketch import BaseSketch
+
+    mro_names = [c.__name__ for c in BaseSketch.__mro__]
+
+    assert "MathMixin" not in mro_names
+    assert not hasattr(BaseSketch, "sin")
+    assert not hasattr(BaseSketch, "np_random")
+    assert hasattr(BaseSketch, "run_sketch")
