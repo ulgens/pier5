@@ -7,6 +7,8 @@ from py5.mixins import (
     ThreadsMixin,
 )
 
+from .math import RandomMixin
+
 __all__ = ("Sketch",)
 
 
@@ -16,6 +18,7 @@ py5Sketch.__bases__ = tuple(base for base in py5Sketch.__bases__ if base.__name_
 
 
 class Sketch(
+    RandomMixin,
     MathMixin,
     DataMixin,
     ThreadsMixin,
