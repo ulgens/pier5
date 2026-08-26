@@ -25,6 +25,8 @@ classifiers = [
 dependencies = [
     "py5>=0.10.11a0,<0.11",
     "type-enforced>=2.8.0",
+    # 4.16.0 is the earliest version with Python 3.15 support
+    "typing-extensions>=4.16.0",
 ]
 
 [project.urls]
