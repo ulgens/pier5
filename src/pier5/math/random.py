@@ -35,6 +35,7 @@ class RandomMixin:
         self.rng: Generator = default_rng(seed)
 
         # Overriding existing rng to inject the new behaviour into the existing ._rng calls
+        # TODO: Remove the following assignment when all ._rng calls are migrated.
         self._rng: Generator = self.rng
 
     @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
