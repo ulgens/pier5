@@ -17,7 +17,7 @@ class RandomMixin:
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.seed: int = random.Random().getrandbits(32)  # noqa: S311
+        self.seed = random.Random().getrandbits(32)  # noqa: S311
 
     @property
     def seed(self) -> int:
