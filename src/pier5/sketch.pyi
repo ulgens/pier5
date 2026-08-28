@@ -10,11 +10,13 @@ from py5.mixins import (
     ThreadsMixin,
 )
 
+from pier5.lifecycle import LoopMixin
 from pier5.math.random import RandomMixin
 
 py5Sketch: _py5Sketch  # noqa: N816
 
 class Sketch(
+    LoopMixin,
     RandomMixin,
     MathMixin,
     DataMixin,
