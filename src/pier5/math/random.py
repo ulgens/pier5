@@ -14,7 +14,9 @@ class RandomMixin:
     so the users can create the multiple instance of same Sketch with different seeds.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
         self.seed: int = random.Random().getrandbits(32)  # noqa: S311
 
     @property
