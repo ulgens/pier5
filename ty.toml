@@ -1,3 +1,10 @@
+[src]
+# Sketch's overall typing structure needs some time.
+# TODO: Will be removed when the base Sketch class is mature.
+exclude = [
+    "examples/sketch.py",
+]
+
 [rules]
 # Right now, the base Sketch class is in an experimental state, and related types are manipulated dynamically.
 # TODO: Will be removed when the base Sketch class is mature.
