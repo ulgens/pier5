@@ -1,11 +1,11 @@
 import warnings
 from unittest.mock import MagicMock
 
-from pier5 import Sketch
+from pier5 import BaseSketch
 
 
 def test_is_looping() -> None:
-    sketch = Sketch()
+    sketch = BaseSketch()
 
     # The default value is True
     assert sketch.is_looping is True
@@ -26,7 +26,7 @@ def test_is_looping_getter_internal_call() -> None:
     Accessing Sketch.is_looping should call _instance.isLooping()
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
     sketch._instance = MagicMock()
 
     sketch.is_looping  # noqa: B018
@@ -37,7 +37,7 @@ def test_is_looping_setter_true_internal_call() -> None:
     """
     Setting Sketch.is_looping = True should call _instance.loop()
     """
-    sketch = Sketch()
+    sketch = BaseSketch()
     sketch._instance = MagicMock()
 
     sketch.is_looping = True
@@ -51,7 +51,7 @@ def test_is_looping_setter_false() -> None:
     Setting Sketch.is_looping = False should call _instance.noLoop()
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
     sketch._instance = MagicMock()
 
     sketch.is_looping = False
@@ -66,7 +66,7 @@ def test_deprecated_loop_method() -> None:
     It should set is_looping = True and raise a DeprecationWarning.
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
     # Setting to the opposite state so the change can be tested.
     sketch.is_looping = False
 
@@ -88,7 +88,7 @@ def test_deprecated_no_loop_method() -> None:
     It should set is_looping = False and raise a DeprecationWarning.
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
     # Setting to the opposite state so the change can be tested.
     sketch.is_looping = True
 

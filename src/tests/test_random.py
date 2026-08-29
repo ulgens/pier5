@@ -3,7 +3,7 @@ import warnings
 
 import numpy as np
 
-from pier5 import Sketch
+from pier5 import BaseSketch
 
 
 def test_default_seed() -> None:
@@ -11,7 +11,7 @@ def test_default_seed() -> None:
     All sketches should have an integer seed by default.
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
 
     assert sketch._seed
     assert isinstance(sketch._seed, int)
@@ -22,7 +22,7 @@ def test_seed_getter() -> None:
     Sketch.seed should work as getter and return _seed
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
 
     # Validate .seed returns ._seed
     assert sketch.seed == sketch._seed
@@ -33,7 +33,7 @@ def test_seed_setter() -> None:
     Sketch.seed should work as setter and update ._seed and .rng
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
 
     # Validate ._seed is updated
     old_seed = sketch._seed
@@ -58,7 +58,7 @@ def test_deprecated_random_seed_method() -> None:
     It should work as .seed setter, but also raise a DeprecationWarning
     """
 
-    sketch = Sketch()
+    sketch = BaseSketch()
     new_seed = random.Random().getrandbits(32)  # noqa: S311
 
     with warnings.catch_warnings(record=True) as w:

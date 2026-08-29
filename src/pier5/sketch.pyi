@@ -15,7 +15,7 @@ from pier5.math.random import RandomMixin
 
 py5Sketch: _py5Sketch  # noqa: N816
 
-class Sketch(
+class BaseSketch(
     LoopMixin,
     RandomMixin,
     MathMixin,
