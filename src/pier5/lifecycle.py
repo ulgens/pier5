@@ -1,12 +1,12 @@
 from typing_extensions import deprecated
 
-from pier5.protocols import _LoopableInstance
+from pier5.protocols import LoopableInstance
 
 __all__ = ("LoopMixin",)
 
 
 class LoopMixin:
-    _instance: _LoopableInstance
+    _instance: LoopableInstance
 
     @property
     def is_looping(self) -> bool:
