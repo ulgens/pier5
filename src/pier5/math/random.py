@@ -1,9 +1,12 @@
+import logging
 import random
 
 from numpy.random import Generator, default_rng
 from typing_extensions import deprecated
 
 __all__ = ("RandomMixin",)
+
+logger = logging.getLogger(__name__)
 
 
 class RandomMixin:
@@ -37,6 +40,10 @@ class RandomMixin:
         # Overriding existing rng to inject the new behaviour into the existing ._rng calls
         # TODO: Remove the following assignment when all ._rng calls are migrated.
         self._rng: Generator = self.rng
+
+        # Log the new seed
+        sketch_uid = f"{type(self).__name__}@0x{id(self):x}"
+        logger.info("%s seeded with %s", sketch_uid, seed)
 
     @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
     def random_seed(self, seed: int) -> None:
