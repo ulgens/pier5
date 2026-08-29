@@ -1,9 +1,9 @@
 import random
 
-from pier5 import Sketch
+from pier5 import BaseSketch
 
 
-class ExampleSketch(Sketch):
+class Sketch(BaseSketch):
     def settings(self) -> None:
         self._width = 800
         self._height = 600
@@ -44,5 +44,5 @@ class ExampleSketch(Sketch):
 
 
 if __name__ == "__main__":
-    sketch = ExampleSketch()
+    sketch = Sketch()
     sketch.run_sketch()

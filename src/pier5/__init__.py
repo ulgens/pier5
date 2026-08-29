@@ -1,9 +1,9 @@
 import logging
 
-from .sketch import Sketch
+from .sketch import BaseSketch
 
 __all__ = (
-    "Sketch",
+    "BaseSketch",
     "__version__",
 )
 

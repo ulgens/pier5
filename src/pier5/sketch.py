@@ -10,7 +10,7 @@ from py5.mixins import (
 from .lifecycle import LoopMixin
 from .math import RandomMixin
 
-__all__ = ("Sketch",)
+__all__ = ("BaseSketch",)
 
 
 # Create a pure version of the py5's Sketch.
@@ -18,7 +18,7 @@ __all__ = ("Sketch",)
 py5Sketch.__bases__ = tuple(base for base in py5Sketch.__bases__ if base.__name__ == "Py5Base")
 
 
-class Sketch(
+class BaseSketch(
     LoopMixin,
     RandomMixin,
     MathMixin,
