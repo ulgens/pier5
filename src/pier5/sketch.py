@@ -27,4 +27,8 @@ class BaseSketch(
     PixelMixin,
     PrintlnStream,
     py5Sketch,
-): ...
+):
+    def __init__(self, *args, **kwargs) -> None:
+        self.uid = f"{type(self).__name__}@0x{id(self):x}"
+
+        super().__init__(*args, **kwargs)

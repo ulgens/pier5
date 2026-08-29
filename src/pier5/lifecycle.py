@@ -6,7 +6,10 @@ __all__ = ("LoopMixin",)
 
 
 class LoopMixin:
+    # Following empty variables are for typing purposes,
+    # and will be assigned on the main class.
     _instance: ProcessingJavaSketch
+    uid: str
 
     @property
     def is_looping(self) -> bool:

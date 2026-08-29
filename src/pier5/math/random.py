@@ -17,6 +17,10 @@ class RandomMixin:
     so the users can create the multiple instance of same Sketch with different seeds.
     """
 
+    # Following empty variables are for typing purposes,
+    # and will be assigned on the main class.
+    uid: str
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -42,8 +46,7 @@ class RandomMixin:
         self._rng: Generator = self.rng
 
         # Log the new seed
-        sketch_uid = f"{type(self).__name__}@0x{id(self):x}"
-        logger.info("%s seeded with %s", sketch_uid, seed)
+        logger.info("%s seeded with %s", self.uid, seed)
 
     @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
     def random_seed(self, seed: int) -> None:
