@@ -1,9 +1,9 @@
 from typing import Protocol
 
-__all__ = ("_LoopableInstance",)
+__all__ = ("LoopableInstance",)
 
 
-class _LoopableInstance(Protocol):
+class LoopableInstance(Protocol):
     """
     Structural contract for the Java-side `py5.core.Sketch` instance.
 
