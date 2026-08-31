@@ -1,12 +1,12 @@
 from typing_extensions import deprecated
 
-from pier5.protocols import LoopableInstance
+from pier5.protocols import ProcessingJavaSketch
 
 __all__ = ("LoopMixin",)
 
 
 class LoopMixin:
-    _instance: LoopableInstance
+    _instance: ProcessingJavaSketch
 
     @property
     def is_looping(self) -> bool:
