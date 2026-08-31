@@ -1,6 +1,6 @@
 from typing_extensions import deprecated
 
-from pier5.protocols import ProcessingJavaSketch
+from ..protocols import ProcessingJavaSketch
 
 __all__ = ("SizeMixin",)
 
@@ -16,7 +16,7 @@ class SizeMixin:
     """
     Size-related logic for sketch dimensions.
 
-    Provides properties for accessing width and height.
+    Provides properties for accessing width and height, and manages the underlying size state.
     """
 
     # Following empty variables are for typing purposes,
