@@ -1,6 +1,6 @@
 from typing_extensions import deprecated
 
-from pier5.protocols import ProcessingJavaSketch
+from .protocols import ProcessingJavaSketch
 
 __all__ = ("LoopMixin",)
 
