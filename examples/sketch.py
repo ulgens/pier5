@@ -4,13 +4,15 @@ from pier5 import BaseSketch
 
 
 class Sketch(BaseSketch):
-    def settings(self) -> None:
-        self.width = 800
-        self.height = 600
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.width = 500
+        self.height = 500
 
     def setup(self) -> None:
-        self.x = self._width / 2
-        self.y = self._height / 2
+        self.x = self.width / 3
+        self.y = self.height / 3
 
         self.is_looping = False
 
@@ -28,12 +30,13 @@ class Sketch(BaseSketch):
         self.y = self.mouse_y
 
         # Redrawing on events seems to produce smoother result
+        self.width = 300
         self.redraw()
 
     def key_pressed(self) -> None:
         if self.key == "r":
-            self.x = self._width / 2
-            self.y = self._height / 2
+            self.x = self.width / 2
+            self.y = self.height / 2
 
             self.redraw()
 

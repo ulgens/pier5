@@ -1,4 +1,4 @@
-from typing import Protocol
+from typing import Any, Protocol
 
 __all__ = ("ProcessingJavaSketch",)
 
@@ -9,7 +9,7 @@ class ProcessingJavaSketch(Protocol):
 
     py5 declares it as a JPype `JClass` value rather than a Python type, so the
     methods can't be imported as a type annotation. This Protocol captures the
-    slice that LoopMixin actually uses.
+    slice that pier5's mixins actually use.
     """
 
     # LoopMixin
@@ -32,6 +32,12 @@ class ProcessingJavaSketch(Protocol):
 
     def getHeight(self) -> int: ...  # noqa: N802
 
+    def setSize(self, width: int, height: int) -> None: ...  # noqa: N802
+
+    def windowResize(self, width: int, height: int) -> None: ...  # noqa: N802
+
     def size(self, width: int, height: int) -> None: ...
+
+    def fullScreen(self, *args: Any) -> None: ...  # noqa: N802
 
     # / SizeMixin
