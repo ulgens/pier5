@@ -24,7 +24,9 @@ classifiers = [
 ]
 dependencies = [
     "py5",
-    "type-enforced>=2.8.0",
+    # 2.9.0 is selected as min thanks to its performance improvements.
+    # https://github.com/connor-makowski/type_enforced/releases/tag/2.9.0
+    "type-enforced>=2.9.0",
     # 4.16.0 is the earliest version with Python 3.15 support
     "typing-extensions>=4.16.0",
 ]
