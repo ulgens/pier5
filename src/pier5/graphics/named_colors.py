@@ -16,7 +16,7 @@ __all__ = (
 )
 
 
-def clean_colors(colors: dict) -> dict[str, str]:
+def clean_colors(colors: dict, sort: bool = False) -> dict[str, str]:
     """
     Converts `"xkcd:light pastel green": "#b2fba5"` to `"LIGHT_PASTEL_GREEN": "#B2FBA5"`.
     Keys are cleaned for enum conversion; values are normalized to uppercase hex for cosmetic purposes.
@@ -42,6 +42,9 @@ def clean_colors(colors: dict) -> dict[str, str]:
 
         clean_colors[new_key] = new_value
 
+    if sort:
+        return dict(sorted(clean_colors.items()))
+
     return clean_colors
 
 
@@ -53,18 +56,18 @@ BaseColor = Enum(
 
 Css4Color = Enum(
     "Css4Color",
-    clean_colors(CSS4_COLORS),
+    clean_colors(CSS4_COLORS, sort=True),
     type=str,
 )
 
 TableauColor = Enum(
     "TableauColor",
-    clean_colors(TABLEAU_COLORS),
+    clean_colors(TABLEAU_COLORS, sort=True),
     type=str,
 )
 
 XkcdColor = Enum(
     "XkcdColor",
-    clean_colors(XKCD_COLORS),
+    clean_colors(XKCD_COLORS, sort=True),
     type=str,
 )
