@@ -23,6 +23,8 @@ classifiers = [
     "Programming Language :: Python :: 3.15",
 ]
 dependencies = [
+    # 3.10.8 is the earliest version with Python 3.14 support
+    "matplotlib>=3.10.8",
     "py5",
     "type-enforced>=2.8.0",
     # 4.16.0 is the earliest version with Python 3.15 support
@@ -38,6 +40,7 @@ Issues = "https://github.com/ulgens/pier5/issues"
 dev = [
     "copier==9.17.2",
     "copier-template-extensions==0.3.3",
+    "faker==40.37.0",
     "ipdb==0.13.13",
     "ipython==9.16.1",
     # Having ruff in the venv helps with IDE's auto lint/format integrations
