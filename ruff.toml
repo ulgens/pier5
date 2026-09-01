@@ -105,3 +105,6 @@ ignore = [
 # Use of "assert" is normal and expected in the test files.
 # https://docs.astral.sh/ruff/rules/assert/
 "**/tests/**" = ["S101"]
+# Use of "print" is normal and expected in the script files.
+# https://docs.astral.sh/ruff/rules/print/
+"**/scripts/**" = ["T201"]

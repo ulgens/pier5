@@ -1,8 +1,17 @@
 import logging
 import random
+import types
+from collections.abc import Sequence
+from typing import Any
 
+import type_enforced
 from numpy.random import Generator, default_rng
 from typing_extensions import deprecated
+
+from pier5.types import (
+    FloatLike,
+    IntLike,
+)
 
 __all__ = ("RandomMixin",)
 
@@ -51,3 +60,75 @@ class RandomMixin:
     @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
     def random_seed(self, seed: int) -> None:
         self.seed = seed
+
+    # TODO: Add docstring for .seed
+
+    @type_enforced.Enforcer
+    def random(
+        self,
+        *,
+        low: FloatLike = 0.0,
+        high: FloatLike = 1.0,
+    ) -> float:
+        return self.rng.uniform(low=low, high=high)
+
+    @type_enforced.Enforcer
+    def random_int(
+        self,
+        *,
+        low: IntLike = 0,
+        high: IntLike = 1,
+    ) -> int:
+        return self.rng.integers(low=low, high=high, endpoint=True)
+
+    @type_enforced.Enforcer
+    def random_choice(
+        self,
+        seq: Sequence[Any],
+    ) -> Any:
+        # TODO: Contribute to upstream
+        return self.rng.choice(seq)
+
+    def random_sample(
+        self,
+        seq: Sequence[Any],
+        size: int = 1,
+        replace: bool = True,
+    ) -> Sequence[Any]:
+        if not len(seq):
+            return []
+
+        if isinstance(seq, types.GeneratorType):
+            seq = list(seq)
+
+        indices = self.rng.choice(
+            range(len(seq)),
+            size=size,
+            replace=replace,
+        )
+
+        if not isinstance(seq, list):
+            return seq[indices]
+
+        return [seq[idx] for idx in indices]
+
+    def random_permutation(self, seq: Sequence[Any]) -> Sequence[Any]:
+        if isinstance(seq, types.GeneratorType):
+            seq = list(seq)
+
+        indices = self.rng.permutation(range(len(seq)))
+
+        if not isinstance(seq, list):
+            return seq[indices]
+
+        return [seq[idx] for idx in indices]
+
+    @type_enforced.Enforcer
+    def random_gaussian(
+        self,
+        *,
+        loc: FloatLike = 0.0,
+        scale: FloatLike = 1.0,
+    ):
+        # TODO: Check return type
+        return self.rng.normal(loc=loc, scale=scale)
