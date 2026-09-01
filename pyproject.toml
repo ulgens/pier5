@@ -38,6 +38,9 @@ Homepage = "https://github.com/ulgens/pier5"
 Source = "https://github.com/ulgens/pier5"
 Issues = "https://github.com/ulgens/pier5/issues"
 
+[project.scripts]
+preview-named-colors = "pier5.utils:preview_named_colors"
+
 [dependency-groups]
 dev = [
     "copier==9.18.1",

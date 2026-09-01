@@ -50,6 +50,12 @@ def test_names_are_unique_within_enum() -> None:
         assert len(names) == len(set(names))
 
 
+def test_names_are_sorted_alphabetically_except_base() -> None:
+    for enum_cls in (Css4Color, TableauColor, XkcdColor):
+        names = [color.name for color in enum_cls]
+        assert names == sorted(names)
+
+
 def test_names_are_upper_identifiers() -> None:
     for enum_cls in (BaseColor, Css4Color, TableauColor, XkcdColor):
         for color in enum_cls:
