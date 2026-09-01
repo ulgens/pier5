@@ -17,7 +17,7 @@ class Sketch(BaseSketch):
         self.is_looping = False
 
     def draw(self) -> None:
-        self.background(255)
+        self.background(200)
 
         self.fill(80, 160, 220)
         self.no_stroke()
