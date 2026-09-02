@@ -9,6 +9,7 @@ from py5.mixins import (
 
 from .lifecycle import LoopMixin
 from .math import RandomMixin
+from .window import WindowMixin
 
 __all__ = ("BaseSketch",)
 
@@ -19,6 +20,7 @@ py5Sketch.__bases__ = tuple(base for base in py5Sketch.__bases__ if base.__name_
 
 
 class BaseSketch(
+    WindowMixin,
     LoopMixin,
     RandomMixin,
     MathMixin,
