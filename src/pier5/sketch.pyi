@@ -12,10 +12,12 @@ from py5.mixins import (
 
 from pier5.lifecycle import LoopMixin
 from pier5.math.random import RandomMixin
+from pier5.window import WindowMixin
 
 py5Sketch: _py5Sketch  # noqa: N816
 
 class BaseSketch(
+    WindowMixin,
     LoopMixin,
     RandomMixin,
     MathMixin,
