@@ -35,3 +35,7 @@ class ProcessingJavaSketch(Protocol):
     def size(self, width: int, height: int) -> None: ...
 
     # / SizeMixin
+    # WindowMixin
+    def windowTitle(self, value: str) -> None: ...  # noqa: N802
+
+    # / WindowMixin
