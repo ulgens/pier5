@@ -4,10 +4,12 @@ from .named_colors import (
     TableauColor,
     XkcdColor,
 )
+from .size import SizeMixin
 
 __all__ = (
     "BaseColor",
     "Css4Color",
+    "SizeMixin",
     "TableauColor",
     "XkcdColor",
 )

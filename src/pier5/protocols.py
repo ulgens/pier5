@@ -12,6 +12,7 @@ class ProcessingJavaSketch(Protocol):
     slice that LoopMixin actually uses.
     """
 
+    # LoopMixin
     def isLooping(self) -> bool:  # noqa: N802
         # No official docs yet: https://github.com/processing/processing-website/issues/703
         ...
@@ -23,3 +24,14 @@ class ProcessingJavaSketch(Protocol):
     def noLoop(self) -> None:  # noqa: N802
         # https://processing.org/examples/noloop.html
         ...
+
+    # / LoopMixin
+
+    # SizeMixin
+    width: int
+
+    height: int
+
+    def size(self, width: int, height: int) -> None: ...
+
+    # / SizeMixin
