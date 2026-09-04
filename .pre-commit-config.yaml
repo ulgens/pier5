@@ -17,7 +17,7 @@ repos:
       - id: pyproject-fmt
 
   - repo: https://github.com/astral-sh/ty-pre-commit
-    rev: v0.0.75
+    rev: v0.0.78
     hooks:
       - id: ty
 
