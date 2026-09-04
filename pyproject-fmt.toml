@@ -8,3 +8,5 @@ collapse_tables = [
     "project.authors",
     "project.maintainers",
 ]
+# TODO: Remove when https://github.com/tox-dev/toml-fmt/issues/460 is resolved.
+max_supported_python = "3.15"
