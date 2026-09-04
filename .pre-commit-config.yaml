@@ -28,6 +28,11 @@ repos:
         args: ["--fix", "--show-fixes"]
       - id: ruff-format
 
+  - repo: https://github.com/instrumentl/pre-commit-just
+    rev: v0.2
+    hooks:
+      - id: format-justfile
+
   - repo: https://github.com/google/yamlfmt
     rev: v0.21.0
     hooks:
