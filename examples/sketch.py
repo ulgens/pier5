@@ -5,10 +5,8 @@ from pier5 import BaseSketch
 
 class Sketch(BaseSketch):
     def settings(self) -> None:
-        self._width = 800
-        self._height = 600
-
-        self.size(self._width, self._height)
+        self.width = 800
+        self.height = 600
 
     def setup(self) -> None:
         self.x = self._width / 2

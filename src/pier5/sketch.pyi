@@ -10,6 +10,7 @@ from py5.mixins import (
     ThreadsMixin,
 )
 
+from pier5.graphics import SizeMixin
 from pier5.lifecycle import LoopMixin
 from pier5.math.random import RandomMixin
 
@@ -17,10 +18,19 @@ py5Sketch: _py5Sketch  # noqa: N816
 
 class BaseSketch(
     LoopMixin,
+    SizeMixin,
     RandomMixin,
     MathMixin,
     DataMixin,
     ThreadsMixin,
     PixelMixin,
     PrintlnStream,
-): ...
+):
+    def run_sketch(
+        self,
+        block: bool | None = None,
+        *,
+        py5_options: list | None = None,
+        sketch_args: list | None = None,
+        _osx_alt_run_method: bool = True,
+    ) -> None: ...
