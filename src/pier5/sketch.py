@@ -7,6 +7,7 @@ from py5.mixins import (
     ThreadsMixin,
 )
 
+from .graphics import SizeMixin
 from .lifecycle import LoopMixin
 from .math import RandomMixin
 
@@ -20,6 +21,7 @@ py5Sketch.__bases__ = tuple(base for base in py5Sketch.__bases__ if base.__name_
 
 class BaseSketch(
     LoopMixin,
+    SizeMixin,
     RandomMixin,
     MathMixin,
     DataMixin,
