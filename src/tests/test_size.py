@@ -1,25 +1,15 @@
 import warnings
-from unittest.mock import MagicMock, PropertyMock
+from unittest.mock import MagicMock
 
-from faker import Faker
-from pytest import mark
+from pytest import raises
 
 from pier5 import BaseSketch
-
-faker = Faker()
-
-default_dimensions = {
-    "width": 100,
-    "height": 100,
-}
+from pier5.exceptions import SizeModificationError
 
 
 def test_default_dimensions() -> None:
     """
     All sketches start with default width and height of 100.
-
-    > If size() is not used, the window will be given a default size of 100 x 100 pixels.
-    https://processing.org/reference/size_.html
     """
 
     sketch = BaseSketch()
@@ -28,126 +18,121 @@ def test_default_dimensions() -> None:
     assert sketch.height == 100
 
 
-def test_width_getter() -> None:
+def test_width_setter_buffers_before_run() -> None:
     """
-    .width's return value should be equal to ._width and ._instance.width
+    Setting .width before run_sketch() buffers the value on the Java sketch.
     """
 
     sketch = BaseSketch()
 
-    assert sketch.width == sketch._width
-    assert sketch.width == sketch._instance.width
+    sketch.width = 800
+
+    assert sketch.width == 800
+    assert int(sketch._instance.width) == 800
 
 
-def test_width_getter_internal_call() -> None:
+def test_height_setter_buffers_before_run() -> None:
     """
-    Accessing .width should call _instance.width
+    Setting .height before run_sketch() buffers the value on the Java sketch.
+    """
+
+    sketch = BaseSketch()
+
+    sketch.height = 600
+
+    assert sketch.height == 600
+    assert int(sketch._instance.height) == 600
+
+
+def test_width_setter_resizes_running_window() -> None:
+    """
+    Setting .width while the sketch is running should resize the window.
+    """
+
+    sketch = BaseSketch()
+    sketch._instance = MagicMock()
+    sketch._instance.height = 100
+    sketch._py5_bridge = MagicMock()
+    sketch._py5_bridge.current_running_method = "draw"
+
+    sketch.width = 800
+
+    sketch._instance.windowResize.assert_called_once_with(800, 100)
+
+
+def test_height_setter_resizes_running_window() -> None:
+    """
+    Setting .height while the sketch is running should resize the window.
+    """
+
+    sketch = BaseSketch()
+    sketch._instance = MagicMock()
+    sketch._instance.width = 100
+    sketch._py5_bridge = MagicMock()
+    sketch._py5_bridge.current_running_method = "draw"
+
+    sketch.height = 600
+
+    sketch._instance.windowResize.assert_called_once_with(100, 600)
+
+
+def test_settings_applies_size() -> None:
+    """
+    Sketch.settings() should apply the buffered dimensions to the Java sketch once.
+    """
+
+    sketch = BaseSketch()
+    sketch._instance = MagicMock()
+    sketch._instance.width = 800
+    sketch._instance.height = 600
+
+    sketch.settings()
+
+    sketch._instance.size.assert_called_once_with(800, 600)
+
+
+def test_full_screen_settings() -> None:
+    """
+    Sketch.settings() should apply full_screen() when full-screen was requested.
     """
 
     sketch = BaseSketch()
     sketch._instance = MagicMock()
 
-    # TODO: Can this mocking logic be simplified?
-    mock_width = PropertyMock()
-    type(sketch._instance).width = mock_width
+    sketch.full_screen()
 
-    sketch.width  # noqa: B018
-    mock_width.assert_called_once()
+    sketch.settings()
 
-
-# Because .size() can be called only from .settings(),
-# and the sketch can only be run as blocking (under macOS),
-# setting the size presents a unique challenge and the only workaround I could find so far
-# is to export the sketch to an image file, and then measuring its size.
-# This will be implemented later.
-@mark.skip(reason="TODO")
-def test_width_setter() -> None: ...
+    sketch._instance.fullScreen.assert_called_once_with()
 
 
-def test_width_setter_internal_call() -> None:
+def test_full_screen_with_args() -> None:
     """
-    Assigning to .width should call _instance.size() with the assigned value
-    """
-
-    sketch = BaseSketch()
-    sketch._instance = MagicMock()
-    new_width = faker.pyint()
-
-    sketch.width = new_width
-
-    sketch._instance.size.assert_called_once_with(
-        new_width,
-        default_dimensions["height"],
-    )
-
-
-def test_height_getter() -> None:
-    """
-    .height's return value should be equal to ._height and ._instance.height
-    """
-
-    sketch = BaseSketch()
-
-    assert sketch.height == sketch._height
-    assert sketch.height == sketch._instance.height
-
-
-def test_height_getter_internal_call() -> None:
-    """
-    Accessing .height should call _instance.width
+    Sketch.full_screen() should forward its arguments to the Java sketch.
     """
 
     sketch = BaseSketch()
     sketch._instance = MagicMock()
 
-    # TODO: Can this mocking logic be simplified?
-    mock_height = PropertyMock()
-    type(sketch._instance).height = mock_height
+    sketch.full_screen("P2D", 2)
 
-    sketch.height  # noqa: B018
-    mock_height.assert_called_once()
+    sketch.settings()
 
-
-# Because .size() can be called only from .settings(),
-# and the sketch can only be run as blocking (under macOS),
-# setting the size presents a unique challenge and the only workaround I could find so far
-# is to export the sketch to an image file, and then measuring its size.
-# This will be implemented later.
-@mark.skip(reason="TODO")
-def test_height_setter() -> None: ...
-
-
-def test_height_setter_internal_call() -> None:
-    """
-    Assigning to .height should call _instance.size() with the assigned value
-    """
-
-    sketch = BaseSketch()
-    sketch._instance = MagicMock()
-    new_height = faker.pyint()
-
-    sketch.height = new_height
-
-    sketch._instance.size.assert_called_once_with(
-        default_dimensions["width"],
-        new_height,
-    )
+    sketch._instance.fullScreen.assert_called_once_with("P2D", 2)
 
 
 def test_deprecated_size_method() -> None:
     """
     Sketch.size() is deprecated.
-    It should set ._width and ._height, call _instance.size() and raise a DeprecationWarning
+    It should forward the call to the Java sketch and raise a DeprecationWarning.
     """
+
     sketch = BaseSketch()
     sketch._instance = MagicMock()
 
-    new_width = faker.pyint()
-    new_height = faker.pyint()
-
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
-        sketch.size(new_width, new_height)  # ty: ignore[deprecated]
+        sketch.size(800, 600)  # ty: ignore[deprecated]
         assert len(w) == 1
 
         deprecation_warning = w[0]
@@ -157,10 +142,33 @@ def test_deprecated_size_method() -> None:
             == "`.size(width, height)` is deprecated. Use `.width = width` and `.height = height` instead."
         )
 
-    assert sketch._width == new_width
-    assert sketch._height == new_height
+    sketch._instance.size.assert_called_once_with(800, 600)
 
-    sketch._instance.size.assert_called_once_with(
-        new_width,
-        new_height,
-    )
+
+def test_size_in_draw_raises() -> None:
+    """
+    Calling .size() after the sketch starts running should raise a meaningful error.
+    """
+
+    sketch = BaseSketch()
+    sketch._py5_bridge = MagicMock()
+    sketch._py5_bridge.current_running_method = "draw"
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", DeprecationWarning)
+
+        with raises(SizeModificationError, match="draw"):
+            sketch.size(800, 600)  # ty: ignore[deprecated]
+
+
+def test_full_screen_in_draw_raises() -> None:
+    """
+    Calling .full_screen() after the sketch starts running should raise a meaningful error.
+    """
+
+    sketch = BaseSketch()
+    sketch._py5_bridge = MagicMock()
+    sketch._py5_bridge.current_running_method = "draw"
+
+    with raises(SizeModificationError, match="draw"):
+        sketch.full_screen()
