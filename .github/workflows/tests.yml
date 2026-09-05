@@ -19,6 +19,8 @@ concurrency:
 env:
   # renovate: datasource=pypi depName=uv
   UV_VERSION: 0.12.8
+  # TODO: Add renovate hints: https://crates.io/crates/just
+  JUST_VERSION: 1.58.0
 
 jobs:
   run-tests:
@@ -58,13 +60,19 @@ jobs:
       - name: Install Python dependencies
         run: uv sync
 
+      - name: Install just
+        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3  # v4.0.0
+        with:
+          # FIXME: zizmor seems to raise a false positive here
+          just-version: ${{ env.JUST_VERSION }}
+
       # py5 refuses to import in a headless environment (CheckHeadless),
       # so tests must run against a virtual X display.
       # Xvfb is preinstalled on the runner
       - name: Run tests
         working-directory: ./src
         run: |
-          xvfb-run -a uv run pytest
+          just test_headless
 
       - name: Build package
         run: uv build
