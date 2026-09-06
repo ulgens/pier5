@@ -76,3 +76,6 @@ def test_deprecated_random_seed_method() -> None:
 # TODO:
 #   Add tests for RandomMixin.random*() methods
 #   https://github.com/ulgens/pier5/issues/36
+
+
+# TODO: Add tests for RandomMixin.*noise*() methods

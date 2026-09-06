@@ -35,3 +35,20 @@ class ProcessingJavaSketch(Protocol):
     def size(self, width: int, height: int) -> None: ...
 
     # / SizeMixin
+
+    # RandomMixin
+    def noise(
+        self,
+        x: int | float,
+        y: int | float | None = None,
+        z: int | float | None = None,
+    ) -> float: ...
+
+    def osNoise(  # noqa: N802
+        self,
+        x: int | float,
+        y: int | float | None = None,
+        z: int | float | None = None,
+    ) -> float: ...
+
+    # / RandomMixin
