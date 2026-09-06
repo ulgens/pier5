@@ -110,8 +110,12 @@ def test_deprecated_random_seed_method() -> None:
 
         deprecation_warning = w[0]
         assert issubclass(deprecation_warning.category, DeprecationWarning)
-        assert str(deprecation_warning.message) == "`.random_seed(value)` is deprecated. Use `.seed = value` instead."
-
+        depr_msg = (
+            "`.random_seed(value)` is deprecated. Use `.seed = value` instead. "
+            "pier5 uses a single seed for random, noise and os_noise. "
+            "Calling the deprecated .random_seed() will update all of them."
+        )
+        assert str(deprecation_warning.message) == depr_msg
     assert sketch.seed == new_seed
 
 

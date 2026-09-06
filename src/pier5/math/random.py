@@ -59,7 +59,11 @@ class RandomMixin:
         # Log the new seed
         logger.info("%s seeded with %s", self.uid, seed)
 
-    @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
+    @deprecated(
+        "`.random_seed(value)` is deprecated. Use `.seed = value` instead. "
+        "pier5 uses a single seed for random, noise and os_noise. "
+        "Calling the deprecated .random_seed() will update all of them."
+    )
     def random_seed(self, seed: int) -> None:
         """
         ...
