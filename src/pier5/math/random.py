@@ -37,11 +37,11 @@ class RandomMixin:
     def seed(self) -> int:
         return self._seed
 
-    # Replaces py5.Sketch.random_seed()
+    # Replaces py5.Sketch.random_seed() and .noise_seed()
     @seed.setter
     def seed(self, seed: int) -> None:
         """
-        Set the seed for the sketch's random number generator.
+        Set the seed for the sketch's random number and noise generators.
 
         Updating the seed reinitializes .rng with the given seed.
         """
@@ -51,6 +51,9 @@ class RandomMixin:
         # Overriding existing rng to inject the new behaviour into the existing ._rng calls
         # TODO: Remove the following assignment when all ._rng calls are migrated.
         self._rng: Generator = self.rng
+
+        # Update the noise seed
+        self._instance.noiseSeed(self._seed)
 
         # Log the new seed
         logger.info("%s seeded with %s", self.uid, seed)
@@ -212,6 +215,22 @@ class RandomMixin:
 
         # TODO: Check the return type
         return self.rng.normal(loc=loc, scale=scale)
+
+    @deprecated(
+        "`.noise_seed(value)` is deprecated. Use `.seed = value` instead."
+        "pier5 uses a single seed for random and noise, calling the deprecased .noise_seed() will update both."
+    )
+    def noise_seed(self, seed: int) -> None:
+        """
+        ...
+
+        References:
+        * https://processing.org/reference/noiseSeed_.html
+        * https://p5js.org/reference/p5/noiseSeed/
+        * https://py5coding.org/reference/sketch_noise_seed.html
+        """
+
+        self.seed = seed
 
     def noise(
         self,
