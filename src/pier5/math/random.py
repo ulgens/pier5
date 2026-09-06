@@ -50,4 +50,115 @@ class RandomMixin:
 
     @deprecated("`.random_seed(value)` is deprecated. Use `.seed = value` instead.")
     def random_seed(self, seed: int) -> None:
+        """
+        ...
+
+        References:
+        * https://processing.org/reference/randomSeed_.html
+        * https://p5js.org/reference/p5/randomSeed/
+        * https://py5coding.org/reference/sketch_random_seed.html
+        """
+
         self.seed = seed
+
+    def random(
+        self,
+        *,
+        low,
+        high,
+    ):
+        """
+        ...
+
+        References:
+        * https://processing.org/reference/random_.html
+        * https://p5js.org/reference/p5/random/
+        * https://py5coding.org/reference/sketch_random.html
+        """
+
+        raise NotImplementedError
+
+    def random_int(
+        self,
+        *,
+        low,
+        high,
+    ):
+        """
+        ...
+
+        References:
+        * Doesn't exist in original Processing implementation
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_random_int.html
+        """
+
+        raise NotImplementedError
+
+    def random_choice(
+        self,
+        *,
+        sequence,
+    ):
+        """
+        ...
+
+        References:
+        * Doesn't exist in original Processing implementation
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_random_choice.html
+        """
+
+        raise NotImplementedError
+
+    def random_sample(
+        self,
+        *,
+        sequence,
+        size: int,
+    ):
+        """
+        ...
+
+        References:
+        * Doesn't exist in original Processing implementation
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_random_sample.html
+        """
+
+        raise NotImplementedError
+
+    def random_permutation(
+        self,
+        *,
+        sequence,
+    ):
+        """
+        ...
+
+        References:
+        * Doesn't exist in original Processing implementation
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_random_permutation.html
+        """
+
+        raise NotImplementedError
+
+    # FIXME: Use the full word as "loc" argument name
+    # TODO: Signature seems to differ from both p5 and Processing, check why.
+    def random_gaussian(
+        self,
+        *,
+        loc,
+        scale,
+    ):
+        """
+        ...
+
+        References:
+        * https://processing.org/reference/randomGaussian_
+        * https://p5js.org/reference/p5/randomGaussian/
+        * https://py5coding.org/reference/sketch_random_gaussian.html
+        """
+
+        raise NotImplementedError

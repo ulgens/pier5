@@ -4,7 +4,6 @@
 from py5 import Sketch as _py5Sketch
 from py5.mixins import (
     DataMixin,
-    MathMixin,
     PixelMixin,
     PrintlnStream,
     ThreadsMixin,
@@ -20,7 +19,6 @@ class BaseSketch(
     LoopMixin,
     SizeMixin,
     RandomMixin,
-    MathMixin,
     DataMixin,
     ThreadsMixin,
     PixelMixin,
