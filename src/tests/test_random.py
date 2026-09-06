@@ -71,3 +71,8 @@ def test_deprecated_random_seed_method() -> None:
         assert str(deprecation_warning.message) == "`.random_seed(value)` is deprecated. Use `.seed = value` instead."
 
     assert sketch.seed == new_seed
+
+
+# TODO:
+#   Add tests for RandomMixin.random*() methods
+#   https://github.com/ulgens/pier5/issues/36
