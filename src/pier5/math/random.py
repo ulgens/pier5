@@ -1,5 +1,8 @@
 import logging
 import random
+from collections.abc import Sequence
+from types import GeneratorType
+from typing import Any
 
 from numpy.random import Generator, default_rng
 from typing_extensions import deprecated
@@ -64,8 +67,8 @@ class RandomMixin:
     def random(
         self,
         *,
-        low,
-        high,
+        low: int | float = 0,
+        high: int | float = 1,
     ):
         """
         ...
@@ -76,13 +79,14 @@ class RandomMixin:
         * https://py5coding.org/reference/sketch_random.html
         """
 
-        raise NotImplementedError
+        return self.rng.uniform(low=low, high=high)
 
+    # TODO: Copying py5's behaviour here but I'm not sure about 1 as default "high" value. Revisit.
     def random_int(
         self,
         *,
-        low,
-        high,
+        low: int = 0,
+        high: int = 1,
     ):
         """
         ...
@@ -93,13 +97,15 @@ class RandomMixin:
         * https://py5coding.org/reference/sketch_random_int.html
         """
 
-        raise NotImplementedError
+        # TODO: Check what does "endpoint" mean and do.
+        return self.rng.integers(low=low, high=high, endpoint=True)
 
+    # TODO: Copying py5's behaviour here but not sure how useful "Any" is. Revisit.
     def random_choice(
         self,
         *,
-        sequence,
-    ):
+        sequence: Sequence[Any],
+    ) -> Any | None:
         """
         ...
 
@@ -108,15 +114,21 @@ class RandomMixin:
         * Doesn't exist in p5
         * https://py5coding.org/reference/sketch_random_choice.html
         """
+        # The default .rng.choice() behaviour for an empty sequence is to raise an error.
+        # We don't want that here, returning None is adequate.
+        if not sequence:
+            return None
 
-        raise NotImplementedError
+        return self.rng.choice(sequence)
 
+    # TODO: Copying py5's behaviour here but not sure how useful "Any" is. Revisit.
     def random_sample(
         self,
         *,
-        sequence,
-        size: int,
-    ):
+        sequence: Sequence[Any],
+        size: int = 1,
+        replace: bool = True,
+    ) -> Sequence[Any]:
         """
         ...
 
@@ -125,14 +137,35 @@ class RandomMixin:
         * Doesn't exist in p5
         * https://py5coding.org/reference/sketch_random_sample.html
         """
+        # TODO: Check the original behaviour. Is the custom check necessary?
+        if sequence:
+            return []
 
-        raise NotImplementedError
+        # TODO: Check the original behaviour. Is the conversion necessary?
+        # TODO: Is list the best target data type here?
+        # TODO: Does "GeneratorType" conforms the expected "Sequence" type?
+        if isinstance(sequence, GeneratorType):
+            sequence = list(sequence)
 
+        # FIXME: It seems some Java shenanigans going on here. Make it Pythonic.
+        indices = self.rng.choice(
+            range(len(sequence)),
+            size=size,
+            replace=replace,
+        )
+
+        if not isinstance(sequence, list):
+            # Not sure what's going on with typing but code is already likely to be deleted.
+            return sequence[indices]  # ty: ignore[invalid-argument-type]
+
+        return [sequence[idx] for idx in indices]
+
+    # TODO: Copying py5's behaviour here but not sure how useful "Any" is. Revisit.
     def random_permutation(
         self,
         *,
-        sequence,
-    ):
+        sequence: Sequence[Any],
+    ) -> Sequence[Any]:
         """
         ...
 
@@ -141,17 +174,29 @@ class RandomMixin:
         * Doesn't exist in p5
         * https://py5coding.org/reference/sketch_random_permutation.html
         """
+        # TODO: Check the original behaviour. Is the conversion necessary?
+        # TODO: Is list the best target data type here?
+        # TODO: Does "GeneratorType" conforms the expected "Sequence" type?
+        if isinstance(sequence, GeneratorType):
+            sequence = list(sequence)
 
-        raise NotImplementedError
+        # FIXME: Another set of Java shenanigans.
+        indices = self.rng.permutation(range(len(sequence)))
+
+        if not isinstance(sequence, list):
+            # Not sure what's going on with typing but code is already likely to be deleted.
+            return sequence[indices]  # ty: ignore[invalid-argument-type]
+
+        return [sequence[idx] for idx in indices]
 
     # FIXME: Use the full word as "loc" argument name
     # TODO: Signature seems to differ from both p5 and Processing, check why.
     def random_gaussian(
         self,
         *,
-        loc,
-        scale,
-    ):
+        loc: int | float = 0,
+        scale: int | float = 1,
+    ) -> float:
         """
         ...
 
@@ -161,4 +206,5 @@ class RandomMixin:
         * https://py5coding.org/reference/sketch_random_gaussian.html
         """
 
-        raise NotImplementedError
+        # TODO: Check the return type
+        return self.rng.normal(loc=loc, scale=scale)
