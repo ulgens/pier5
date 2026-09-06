@@ -37,6 +37,8 @@ class ProcessingJavaSketch(Protocol):
     # / SizeMixin
 
     # RandomMixin
+    def noiseSeed(self, seed: int) -> None: ...  # noqa: N802
+
     def noise(
         self,
         x: int | float,
