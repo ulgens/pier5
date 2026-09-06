@@ -4,10 +4,15 @@ from collections.abc import Sequence
 from types import GeneratorType
 from typing import Any
 
+import type_enforced
 from numpy.random import Generator, default_rng
 from typing_extensions import deprecated
 
 from ..protocols import ProcessingJavaSketch
+from ..types import (
+    FloatLike,
+    IntLike,
+)
 
 __all__ = ("RandomMixin",)
 
@@ -68,12 +73,15 @@ class RandomMixin:
 
         self.seed = seed
 
+    # TODO: Add docstring for .seed
+
+    @type_enforced.Enforcer
     def random(
         self,
         *,
-        low: int | float = 0,
-        high: int | float = 1,
-    ):
+        low: FloatLike = 0.0,
+        high: FloatLike = 1.0,
+    ) -> float:
         """
         ...
 
@@ -86,12 +94,13 @@ class RandomMixin:
         return self.rng.uniform(low=low, high=high)
 
     # TODO: Copying py5's behaviour here but I'm not sure about 1 as default "high" value. Revisit.
+    @type_enforced.Enforcer
     def random_int(
         self,
         *,
-        low: int = 0,
-        high: int = 1,
-    ):
+        low: IntLike = 0,
+        high: IntLike = 1,
+    ) -> int:
         """
         ...
 
@@ -104,6 +113,7 @@ class RandomMixin:
         # TODO: Check what does "endpoint" mean and do.
         return self.rng.integers(low=low, high=high, endpoint=True)
 
+    @type_enforced.Enforcer
     # TODO: Copying py5's behaviour here but not sure how useful "Any" is. Revisit.
     def random_choice(
         self,
@@ -195,11 +205,12 @@ class RandomMixin:
 
     # FIXME: Use the full word as "loc" argument name
     # TODO: Signature seems to differ from both p5 and Processing, check why.
+    @type_enforced.Enforcer
     def random_gaussian(
         self,
         *,
-        loc: int | float = 0,
-        scale: int | float = 1,
+        loc: FloatLike = 0.0,
+        scale: FloatLike = 1.0,
     ) -> float:
         """
         ...
@@ -213,6 +224,7 @@ class RandomMixin:
         # TODO: Check the return type
         return self.rng.normal(loc=loc, scale=scale)
 
+    @type_enforced.Enforcer
     def noise(
         self,
         x: int | float,
@@ -234,6 +246,7 @@ class RandomMixin:
 
         return self._instance.noise(x, y, z)
 
+    @type_enforced.Enforcer
     def os_noise(
         self,
         x: int | float,
