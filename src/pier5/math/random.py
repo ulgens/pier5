@@ -7,7 +7,10 @@ from typing import Any
 from numpy.random import Generator, default_rng
 from typing_extensions import deprecated
 
+from ..protocols import ProcessingJavaSketch
+
 __all__ = ("RandomMixin",)
+
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +25,7 @@ class RandomMixin:
 
     # Following empty variables are for typing purposes,
     # and will be assigned on the main class.
+    _instance: ProcessingJavaSketch
     uid: str
 
     def __init__(self, *args, **kwargs) -> None:
@@ -208,3 +212,45 @@ class RandomMixin:
 
         # TODO: Check the return type
         return self.rng.normal(loc=loc, scale=scale)
+
+    def noise(
+        self,
+        x: int | float,
+        y: int | float | None = None,
+        z: int | float | None = None,
+    ) -> float:
+        """
+        Returns the Perlin noise value at specified coordinates
+
+        References:
+        * https://processing.org/reference/noise_.html
+        * https://p5js.org/reference/p5/noise/
+        * https://py5coding.org/reference/sketch_noise.html
+        """
+
+        # TODO:
+        #   Handle NDArray input case from py5
+        #   https://github.com/py5coding/py5generator/blob/e73ce2398e43f500803dc5f9e1c2d50e579e5a4f/py5-resources/py5-module/src/py5/mixins/math.py#L425
+
+        return self._instance.noise(x, y, z)
+
+    def os_noise(
+        self,
+        x: int | float,
+        y: int | float | None = None,
+        z: int | float | None = None,
+    ) -> float:
+        """
+        ...
+
+        References:
+        * Processing doesn't document osNoise
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_os_noise.html
+        """
+
+        # TODO:
+        #   Handle NDArray input case from py5
+        #   https://github.com/py5coding/py5generator/blob/e73ce2398e43f500803dc5f9e1c2d50e579e5a4f/py5-resources/py5-module/src/py5/mixins/math.py#L465
+
+        return self._instance.osNoise(x, y, z)
