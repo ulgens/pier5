@@ -53,4 +53,10 @@ class ProcessingJavaSketch(Protocol):
         z: int | float | None = None,
     ) -> float: ...
 
+    def noiseDetail(  # noqa: N802
+        self,
+        lod: int,
+        falloff: float | None = None,
+    ): ...
+
     # / RandomMixin

@@ -3,8 +3,11 @@ import warnings
 from unittest.mock import MagicMock
 
 import numpy as np
+from faker import Faker
 
 from pier5 import BaseSketch
+
+faker = Faker()
 
 
 def test_default_seed() -> None:
@@ -121,6 +124,25 @@ def test_deprecated_noise_seed_method() -> None:
         assert str(deprecation_warning.message) == depr_msg
 
     assert sketch.seed == new_seed
+
+
+def test_noise_detail() -> None:
+    """
+    .noise_detail(lod=val1, falloff=val2) should call ._instance.noiseDetail(val1, val2)
+    """
+
+    sketch = BaseSketch()
+    sketch._instance = MagicMock()
+
+    lod_value = faker.pyint()
+    falloff_value = faker.pyfloat()
+
+    sketch.noise_detail(lod=lod_value, falloff=falloff_value)
+
+    sketch._instance.noiseDetail.assert_called_once_with(
+        lod_value,
+        falloff_value,
+    )
 
 
 # TODO:

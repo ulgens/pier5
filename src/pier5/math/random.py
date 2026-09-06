@@ -273,3 +273,32 @@ class RandomMixin:
         #   https://github.com/py5coding/py5generator/blob/e73ce2398e43f500803dc5f9e1c2d50e579e5a4f/py5-resources/py5-module/src/py5/mixins/math.py#L465
 
         return self._instance.osNoise(x, y, z)
+
+    # FIXME: Use the full word as "lod" argument name and remove the exception from codespell config
+    def noise_detail(
+        self,
+        *,
+        lod: int,
+        falloff: float | None = None,
+    ) -> None:
+        """
+        ...
+
+        Args:
+            lod(int): Number of octaves to be used by the noise
+            falloff(float): Falloff factor for each octave
+
+        References:
+        * https://processing.org/reference/noiseDetail_.html
+        * https://p5js.org/reference/p5/noiseDetail/
+        * https://py5coding.org/reference/sketch_noise_detail.html
+        """
+        # TODO:
+        #   I'm not happy with this method in general.
+        #   It feels like a single setter for two attributes, but also their getters are missing.
+        #   Also, there is no way of generating multiple noise channels with different seeds under a single sketch.
+        #   Consider creating a new interface, like "NoiseGenerator"
+
+        # py5 implements this method under the main Sketch class, not MathMixin. I don't know why.
+
+        return self._instance.noiseDetail(lod, falloff)
