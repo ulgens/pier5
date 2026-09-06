@@ -80,6 +80,20 @@ def test_seed_setter_noise() -> None:
     sketch._instance.noiseSeed.assert_called_once_with(new_seed)
 
 
+def test_seed_setter_os_noise() -> None:
+    """
+    Assigning to .seed should call ._instance.osNoiseSeed()
+    """
+
+    sketch = BaseSketch()
+    sketch._instance = MagicMock()
+
+    new_seed = random.Random().getrandbits(32)  # noqa: S311
+    sketch.seed = new_seed
+
+    sketch._instance.osNoiseSeed.assert_called_once_with(new_seed)
+
+
 def test_deprecated_random_seed_method() -> None:
     """
     Sketch.random_seed() is deprecated.
@@ -118,8 +132,35 @@ def test_deprecated_noise_seed_method() -> None:
         deprecation_warning = w[0]
         assert issubclass(deprecation_warning.category, DeprecationWarning)
         depr_msg = (
-            "`.noise_seed(value)` is deprecated. Use `.seed = value` instead."
-            "pier5 uses a single seed for random and noise, calling the deprecased .noise_seed() will update both."
+            "`.noise_seed(value)` is deprecated. Use `.seed = value` instead. "
+            "pier5 uses a single seed for random, noise and os_noise. "
+            "Calling the deprecated .noise_seed() will update all of them."
+        )
+        assert str(deprecation_warning.message) == depr_msg
+
+    assert sketch.seed == new_seed
+
+
+def test_deprecated_os_noise_seed_method() -> None:
+    """
+    Sketch.noise_seed() is deprecated.
+    It should work as .seed setter, but also raise a DeprecationWarning
+    """
+
+    sketch = BaseSketch()
+    new_seed = random.Random().getrandbits(32)  # noqa: S311
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        sketch.os_noise_seed(new_seed)  # ty: ignore[deprecated]
+        assert len(w) == 1
+
+        deprecation_warning = w[0]
+        assert issubclass(deprecation_warning.category, DeprecationWarning)
+        depr_msg = (
+            "`.os_noise_seed(value)` is deprecated. Use `.seed = value` instead. "
+            "pier5 uses a single seed for random, noise and os_noise. "
+            "Calling the deprecated .os_noise_seed() will update all of them."
         )
         assert str(deprecation_warning.message) == depr_msg
 

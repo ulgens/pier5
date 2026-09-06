@@ -46,6 +46,8 @@ class ProcessingJavaSketch(Protocol):
         z: int | float | None = None,
     ) -> float: ...
 
+    def osNoiseSeed(self, seed: int) -> None: ...  # noqa: N802
+
     def osNoise(  # noqa: N802
         self,
         x: int | float,

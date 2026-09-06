@@ -37,7 +37,7 @@ class RandomMixin:
     def seed(self) -> int:
         return self._seed
 
-    # Replaces py5.Sketch.random_seed() and .noise_seed()
+    # Replaces py5.Sketch.random_seed(), .noise_seed() and .os_noise_seed()
     @seed.setter
     def seed(self, seed: int) -> None:
         """
@@ -52,8 +52,9 @@ class RandomMixin:
         # TODO: Remove the following assignment when all ._rng calls are migrated.
         self._rng: Generator = self.rng
 
-        # Update the noise seed
+        # Update the noise seeds
         self._instance.noiseSeed(self._seed)
+        self._instance.osNoiseSeed(self._seed)
 
         # Log the new seed
         logger.info("%s seeded with %s", self.uid, seed)
@@ -217,8 +218,9 @@ class RandomMixin:
         return self.rng.normal(loc=loc, scale=scale)
 
     @deprecated(
-        "`.noise_seed(value)` is deprecated. Use `.seed = value` instead."
-        "pier5 uses a single seed for random and noise, calling the deprecased .noise_seed() will update both."
+        "`.noise_seed(value)` is deprecated. Use `.seed = value` instead. "
+        "pier5 uses a single seed for random, noise and os_noise. "
+        "Calling the deprecated .noise_seed() will update all of them."
     )
     def noise_seed(self, seed: int) -> None:
         """
@@ -252,6 +254,29 @@ class RandomMixin:
         #   https://github.com/py5coding/py5generator/blob/e73ce2398e43f500803dc5f9e1c2d50e579e5a4f/py5-resources/py5-module/src/py5/mixins/math.py#L425
 
         return self._instance.noise(x, y, z)
+
+    @deprecated(
+        "`.os_noise_seed(value)` is deprecated. Use `.seed = value` instead. "
+        "pier5 uses a single seed for random, noise and os_noise. "
+        "Calling the deprecated .os_noise_seed() will update all of them."
+    )
+    def os_noise_seed(self, seed: int) -> None:
+        """
+        DEPRECATED. Originally used by Processing to set the seed value for os_noise().
+
+        Args:
+            seed: seed value
+
+        References:
+        * https://processing.org/reference/noiseSeed_.html
+        * Doesn't exist in p5
+        * https://py5coding.org/reference/sketch_os_noise_seed.html
+        """
+        # TODO:
+        #   py5 docs mention only noise() but it seems the seed effects more than just noise().
+        #   Does this call for a PR?
+
+        self.seed = seed
 
     def os_noise(
         self,
